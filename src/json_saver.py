@@ -14,7 +14,9 @@ class JSONSaver(JSONJobHandler):
                 data = list(json.load(file))
         except FileNotFoundError:
             data = []
-        data.append(vacancy.__dict__)
+        data.append(
+            {"name": vacancy.name, "url": vacancy.url, "salary": vacancy.salary, "experience": vacancy.experience}
+        )
         with open(file_path, "w", encoding="utf-8") as file:
 
             json.dump(data, file, ensure_ascii=False, indent=2)
@@ -36,7 +38,12 @@ class JSONSaver(JSONJobHandler):
         except FileNotFoundError:
             data = []
         for i in data:
-            if vacancy.__dict__ == i:
+            if [vacancy.name, vacancy.url, vacancy.salary, vacancy.experience] == [
+                i["name"],
+                i["url"],
+                i["salary"],
+                i["experience"],
+            ]:
                 data.remove(i)
                 break
         with open(file_path, "w", encoding="utf-8") as file:
